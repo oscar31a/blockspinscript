@@ -1,0 +1,112 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+setclipboard("https://loot-link.com/s?IQcqaLvV")
+
+local Window = Rayfield:CreateWindow({
+   Name = "Ez Hub",
+   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "free gunz",
+   LoadingSubtitle = "by oscar31a",
+   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = nil, -- Create a custom folder for your hub/game
+      FileName = "Big Hub"
+   },
+
+   Discord = {
+      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+
+   KeySystem = true, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Key System",
+      Subtitle = "Bypass = not sigma",
+      Note = "The link was copied to your clipboard!", -- Use this to tell the user how to get a key
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Xj6kp0fD"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+
+local FakeTab = Window:CreateTab("Fake Items", nil)
+local FakeGunSection = FakeTab:CreateSection("Guns")
+
+local SelectedGun = "AK47"
+local gunStrings = {}
+
+for i, v in ipairs(game.ReplicatedStorage.Items.gun:GetChildren()) do
+   table.insert(gunStrings, v.Name)
+end
+
+local SelectGunDrop = FakeTab:CreateDropdown({
+   Name = "Gun Selection",
+   Options = gunStrings,
+   CurrentOption = {"AK47"},
+   MultipleOptions = false,
+   Flag = "Dropdown1",
+   Callback = function(Options)
+       for i, v in pairs(Options) do
+          SelectedGun = v
+       end
+   end,
+})
+
+local GetGun = FakeTab:CreateButton({
+   Name = "Get Selected Gun (Equipping more than 3 Items will start to remove others)",
+   Callback = function()
+       local rs = game.ReplicatedStorage
+       local guns = rs.Items.gun
+       guns[SelectedGun]:Clone().Parent = game.Players.LocalPlayer.Backpack
+   end,
+})
+
+local Divider = FakeTab:CreateDivider()
+local SelectedMelee = "Machette"
+
+local FakeMeleeSection = FakeTab:CreateSection("Melees")
+
+local meleeStrings = {}
+
+for i, v in ipairs(game.ReplicatedStorage.Items.melee:GetChildren()) do
+   table.insert(meleeStrings, v.Name)
+end
+
+local SelectMeleeDrop = FakeTab:CreateDropdown({
+   Name = "Melee Selection",
+   Options = meleeStrings,
+   CurrentOption = {"Machette"},
+   MultipleOptions = false,
+   Flag = "Dropdown2",
+   Callback = function(Options)
+       for i, v in pairs(Options) do
+          SelectedMelee = v
+       end
+   end,
+})
+
+local GetMelee = FakeTab:CreateButton({
+   Name = "Get Selected Melee (Equipping more than 3 Itens will start to remove others)",
+   Callback = function()
+       local rs = game.ReplicatedStorage
+       local melees = rs.Items.melee
+       melees[SelectedMelee]:Clone().Parent = game.Players.LocalPlayer.Backpack
+   end,
+})
+
+local MiscTab = Window:CreateTab("Misc", nil)
+
+local GetDiscord = MiscTab:CreateButton({
+   Name = "Discord: @skibidiohio_rizz dm for suggestions",
+   Callback = function()
+      setclipboard("@skibidiohio_rizz")
+   end,
+})
+
